@@ -84,7 +84,6 @@ def github_callback(request):
                 profile_request = requests.get(
                     "https://api.github.com/user", headers={"Authorization": f"token {access_token}", "Accept": "application/json"},)
                 profile_json = profile_request.json()
-                print(profile_json)
                 username = profile_json.get("login", None)
                 if username is not None:
                     name = profile_json.get("name")
@@ -107,6 +106,7 @@ def github_callback(request):
                             username=email,
                             bio=bio,
                             login_method=models.User.LOGIN_GITHUB,
+                            email_verified=True,
                         )
                         user.set_unusable_password()
                         user.save()
@@ -146,5 +146,27 @@ def kakao_callback(request):
             "https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {ACCESS_TOKEN}"},)
         profile_json = profile_request.json()
         print(profile_json)
+        kakao_account = profile_json.get('kakao_account')
+        email = kakao_account.get('email', None)
+        if email is None:
+            raise Kakao_Exception()
+        nickname = kakao_account.get('profile').get('nickname')
+        profile_image = kakao_account.get('profile_image_url')
+        try:
+            user = models.User.objects.get(email=email)
+            if user.login_method != models.User.LOGIN_KAKAO:
+                raise Kakao_Exception()
+        except models.User.DoesNotExist:
+            user = models.User.objects.create(
+                email=email,
+                username=email,
+                first_name=nickname,
+                login_method=models.User.LOGIN_KAKAO,
+                email_verified=True,
+            )
+            user.set_unusable_password()
+            user.save()
+        login(request, user)
+        return redirect(reverse("core:home"))
     except Kakao_Exception:
         return redirect(reverse("users:login"))
