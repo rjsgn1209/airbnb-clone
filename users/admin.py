@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
                     "language",
                     "currency",
                     "superhost",
-                    "login_mothod",
+                    "login_method",
                 )
             },
         ),
