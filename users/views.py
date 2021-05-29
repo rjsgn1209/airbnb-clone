@@ -85,7 +85,6 @@ def github_callback(request):
                 profile_request = requests.get(
                     "https://api.github.com/user", headers={"Authorization": f"token {access_token}", "Accept": "application/json"},)
                 profile_json = profile_request.json()
-                print(profile_json)
                 username = profile_json.get("login", None)
                 if username is not None:
                     name = profile_json.get("name")
