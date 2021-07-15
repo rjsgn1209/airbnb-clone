@@ -140,3 +140,4 @@ cython_debug/
 # Mac
 .DS-Store
 uploads/
+node_modules/

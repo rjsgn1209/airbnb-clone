@@ -1,21 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ef53326b4b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
     <title>{% block page_title %}{% endblock page_title %} | Nbnb</title>
 </head>
-<body>
-
-    {% include "partials/nav.html" %}
-    
-    {% block search-bar %}
-        <form method="GET" action={% url "rooms:search" %}>
-            <input name="city" placeholder="Search by City" />
-        </form>
-    {% endblock search-bar %}
-        
+<body class="text-gray-800 mt-20 font-light">
+    <header class="container max-w-full flex justify-between items-center h-20 px-8 border-b border-gray-400 fixed bg-white inset-0">
+        <div class="flex items-center w-1/2">
+            <a href="{% url "core:home" %}" class="mr-6">
+                <img class="w-8" src="{% static "img/logo.png" %}" />
+            </a>
+            {% block search-bar %}
+            <form class="w-full" method="GET" action={% url "rooms:search" %}>
+                <input class="search-box w-3/5 border px-5 py-3 rounded-sm w-64 font-medium placeholder-gray-600 shadow-md hover:shadow-lg focus:outline-none" name="city" placeholder="Search by City" />
+            </form>
+            {% endblock search-bar %}
+        </div>
+        {% include "partials/nav.html" %}
+    </header>
    
     {% block content %}{% endblock content %}
     

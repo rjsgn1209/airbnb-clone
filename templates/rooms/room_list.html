@@ -5,26 +5,36 @@
     
 {% block content %}
 
-{% for room in object_list %}
-    <h3>
-        <a href="{% url "rooms:detail" room.pk%}">{{room.name}} / ${{room.price}}</a>
-    </h3>
-{% endfor %}
-    <h5>
+<div class="container mx-auto pb-10">
+    <div class="h-50vh rounded-xl mt-32 mb-16 bg-cover bg-center" style="background-image:url(https://images.unsplash.com/photo-1546874177-9e664107314e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&)"></div>
+    <div class="flex flex-wrap mb-10">
+        {% for room in object_list %}
+            
+                {% include "partials/room_card.html" with room=room %}
+
+        {% endfor %}
+    </div>
+    <div class="flex items-center justify-center mx-auto container">
         
         {% if page_obj.has_previous %}
-            <a href="?page={{page_obj.number|add:-1}}">Previous</a>
+            <a class="text-teal-500" href="?page={{page_obj.number|add:-1}}">
+                <i class="fas fa-arrow-left fa-lg"></i>
+            </a>
         {% endif %}
             
         
-        page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+        <span class="mx-3 font-medium text-lg">{{page_obj.number}} of {{page_obj.paginator.num_pages}}</span>
 
         
         {% if page_obj.has_next %}
-            <a href="?page={{page_obj.number|add:1}}">Next</a>
+            <a class="text-teal-500" href="?page={{page_obj.number|add:1}}">
+                <i class="fas fa-arrow-right fa-lg"></i>
+            </a>
         {% endif %}
             
         
-    </h5>
-{% endblock content %}%}
+    </div>
+</div>
+
+{% endblock content %}
 
